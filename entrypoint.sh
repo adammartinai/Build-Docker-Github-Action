@@ -23,6 +23,8 @@ function main() {
 
   build
 
+  echo "::set-output name=digest::${DIGEST}"
+
   if uses "${INPUT_TESTCOMMAND}"; then
     eval ${INPUT_TESTCOMMAND}
   fi
