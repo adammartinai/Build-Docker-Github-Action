@@ -23,11 +23,6 @@ function main() {
 
   build
 
-  DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${DOCKERNAME})
-  echo "::set-output name=digest::${DIGEST}"
-
-  echo ${DIGEST}
-
   echo ${INPUT_TESTCOMMAND}
 
   if uses "${INPUT_TESTCOMMAND}"; then
