@@ -22,6 +22,10 @@ function main() {
   fi
 
   build
+
+  if uses "${INPUT_TESTCOMMAND}"; then
+    eval ${INPUT_TESTCOMMAND}
+  fi
 }
 
 function sanitize() {

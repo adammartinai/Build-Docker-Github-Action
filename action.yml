@@ -11,6 +11,9 @@ inputs:
   dockerfile:
     description: 'Use dockerfile when you would like to explicitly build a Dockerfile'
     required: false
+  testCommand:
+    description: 'Run a test command after building'
+    required: false
 outputs:
   tag:
     description: 'Is the tag, which was pushed'
