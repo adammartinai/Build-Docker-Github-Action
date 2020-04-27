@@ -126,10 +126,6 @@ function useSnapshot() {
 
 function build() {
   local BUILD_TAGS=""
-  for TAG in ${TAGS}
-  do
-    BUILD_TAGS="${BUILD_TAGS}-t ${INPUT_NAME}:${TAG} "
-  done
   echo "docker build ${INPUT_BUILDOPTIONS} ${BUILDPARAMS} ${BUILD_TAGS} ${CONTEXT}"
   docker build ${INPUT_BUILDOPTIONS} ${BUILDPARAMS} ${BUILD_TAGS} ${CONTEXT}
 }
