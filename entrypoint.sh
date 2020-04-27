@@ -103,8 +103,8 @@ function isSemver() {
 }
 
 function build() {
-  local BUILD_TAGS=""
-  # echo "docker build ${INPUT_BUILDOPTIONS} ${BUILDPARAMS} ${BUILD_TAGS} ${CONTEXT}"
+  local BUILD_TAGS="-t ${DOCKERNAME}"
+  echo "docker build ${INPUT_BUILDOPTIONS} ${BUILDPARAMS} ${BUILD_TAGS} ${CONTEXT}"
   docker build ${INPUT_BUILDOPTIONS} ${BUILDPARAMS} ${BUILD_TAGS} ${CONTEXT}
 }
 
