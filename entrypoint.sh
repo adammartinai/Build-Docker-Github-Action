@@ -5,28 +5,15 @@ function main() {
   echo "" # see https://github.com/actions/toolkit/issues/168
 
   sanitize "${INPUT_NAME}" "name"
-  sanitize "${INPUT_USERNAME}" "username"
-  sanitize "${INPUT_PASSWORD}" "password"
 
-  REGISTRY_NO_PROTOCOL=$(echo "${INPUT_REGISTRY}" | sed -e 's/^https:\/\///g')
-  if uses "${INPUT_REGISTRY}" && ! isPartOfTheName "${REGISTRY_NO_PROTOCOL}"; then
-    INPUT_NAME="${REGISTRY_NO_PROTOCOL}/${INPUT_NAME}"
-  fi
-
-  if uses "${INPUT_TAGS}"; then
-    TAGS=$(echo "${INPUT_TAGS}" | sed "s/,/ /g")
-  else 
-    translateDockerTag
-  fi
+  translateDockerTag
 
   if uses "${INPUT_WORKDIR}"; then
     changeWorkingDirectory
   fi
 
-  echo ${INPUT_PASSWORD} | docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY}
-
   FIRST_TAG=$(echo $TAGS | cut -d ' ' -f1)
-  DOCKERNAME="${INPUT_NAME}:${FIRST_TAG}"
+  DOCKERNAME="${INPUT_NAME}:ci"
   BUILDPARAMS=""
   CONTEXT="."
 
@@ -36,17 +23,11 @@ function main() {
   if uses "${INPUT_BUILDARGS}"; then
     addBuildArgs
   fi
-  if uses "${INPUT_CONTEXT}"; then
-    CONTEXT="${INPUT_CONTEXT}"
-  fi
   if usesBoolean "${INPUT_CACHE}"; then
     useBuildCache
   fi
-  if usesBoolean "${INPUT_SNAPSHOT}"; then
-    useSnapshot
-  fi
 
-  push
+  build
 
   echo "::set-output name=tag::${FIRST_TAG}"
   DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${DOCKERNAME})
@@ -143,18 +124,13 @@ function useSnapshot() {
   echo ::set-output name=snapshot-tag::"${SNAPSHOT_TAG}"
 }
 
-function push() {
+function build() {
   local BUILD_TAGS=""
   for TAG in ${TAGS}
   do
     BUILD_TAGS="${BUILD_TAGS}-t ${INPUT_NAME}:${TAG} "
   done
   docker build ${INPUT_BUILDOPTIONS} ${BUILDPARAMS} ${BUILD_TAGS} ${CONTEXT}
-
-  for TAG in ${TAGS}
-  do
-    docker push "${INPUT_NAME}:${TAG}"
-  done
 }
 
 main
