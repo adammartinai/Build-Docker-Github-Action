@@ -29,11 +29,11 @@ function main() {
 
   build
 
-  echo "::set-output name=tag::${FIRST_TAG}"
-  DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${DOCKERNAME})
-  echo "::set-output name=digest::${DIGEST}"
+  # echo "::set-output name=tag::${FIRST_TAG}"
+  # DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${DOCKERNAME})
+  # echo "::set-output name=digest::${DIGEST}"
 
-  docker logout
+  # docker logout
 }
 
 function sanitize() {
