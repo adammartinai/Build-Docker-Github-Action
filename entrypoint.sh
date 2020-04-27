@@ -25,6 +25,8 @@ function main() {
 
   echo "::set-output name=digest::${DIGEST}"
 
+  echo ${INPUT_TESTCOMMAND}
+
   if uses "${INPUT_TESTCOMMAND}"; then
     eval ${INPUT_TESTCOMMAND}
   fi
