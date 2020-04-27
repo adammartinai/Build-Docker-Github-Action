@@ -20,20 +20,8 @@ function main() {
   if uses "${INPUT_DOCKERFILE}"; then
     useCustomDockerfile
   fi
-  if uses "${INPUT_BUILDARGS}"; then
-    addBuildArgs
-  fi
-  if usesBoolean "${INPUT_CACHE}"; then
-    useBuildCache
-  fi
 
   build
-
-  # echo "::set-output name=tag::${FIRST_TAG}"
-  # DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${DOCKERNAME})
-  # echo "::set-output name=digest::${DIGEST}"
-
-  # docker logout
 }
 
 function sanitize() {
@@ -91,19 +79,6 @@ function useCustomDockerfile() {
   BUILDPARAMS="${BUILDPARAMS} -f ${INPUT_DOCKERFILE}"
 }
 
-function addBuildArgs() {
-  for ARG in $(echo "${INPUT_BUILDARGS}" | tr ',' '\n'); do
-    BUILDPARAMS="${BUILDPARAMS} --build-arg ${ARG}"
-    echo "::add-mask::${ARG}"
-  done
-}
-
-function useBuildCache() {
-  if docker pull ${DOCKERNAME} 2>/dev/null; then
-    BUILDPARAMS="$BUILDPARAMS --cache-from ${DOCKERNAME}"
-  fi
-}
-
 function uses() {
   [ ! -z "${1}" ]
 }
@@ -114,14 +89,6 @@ function usesBoolean() {
 
 function isSemver() {
   echo "${1}" | grep -Eq '^refs/tags/v?([0-9]+)\.([0-9+])\.([0-9]+)(-[a-zA-Z]+(\.[0-9]+)?)?$'
-}
-
-function useSnapshot() {
-  local TIMESTAMP=`date +%Y%m%d%H%M%S`
-  local SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-6)
-  local SNAPSHOT_TAG="${TIMESTAMP}${SHORT_SHA}"
-  TAGS="${TAGS} ${SNAPSHOT_TAG}"
-  echo ::set-output name=snapshot-tag::"${SNAPSHOT_TAG}"
 }
 
 function build() {

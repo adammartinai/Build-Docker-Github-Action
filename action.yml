@@ -11,15 +11,6 @@ inputs:
   dockerfile:
     description: 'Use dockerfile when you would like to explicitly build a Dockerfile'
     required: false
-  workdir:
-    description: 'Use workdir when you would like to change the directory for building'
-    required: false
-  buildargs:
-    description: 'Use buildargs when you want to pass a list of environment variables as build-args'
-    required: false
-  cache:
-    description: 'Use cache when you have big images, that you would only like to build partially'
-    required: false
 outputs:
   tag:
     description: 'Is the tag, which was pushed'
