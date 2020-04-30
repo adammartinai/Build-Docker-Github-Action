@@ -17,17 +17,17 @@ function main() {
   BUILDPARAMS=""
   CONTEXT="."
 
-  echo $INPUT_DOCKERFILE
-
   if uses "${INPUT_DOCKERFILE}"; then
     useCustomDockerfile
+  fi
+
+  if [ "${INPUT_SHOULDBUILD}" = "true"]; then
     build
   fi
 
-  
+  # echo ${INPUT_TESTCOMMAND}
 
   if uses "${INPUT_TESTCOMMAND}"; then
-    echo ${INPUT_TESTCOMMAND}
     TESTOUTPUT=`eval ${INPUT_TESTCOMMAND}`
     echo $TESTOUTPUT
   fi

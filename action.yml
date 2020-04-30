@@ -5,6 +5,10 @@ branding:
   color: 'blue'
 description: 'Uses the git branch as the docker tag and pushes the container'
 inputs:
+  shouldBuild:
+    description: 'Should we build the docker image'
+    required: false
+    default: 'true'
   name:
     description: 'The name of the image you would like to push'
     required: true
