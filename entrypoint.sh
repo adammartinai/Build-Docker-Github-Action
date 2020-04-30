@@ -26,7 +26,8 @@ function main() {
   echo ${INPUT_TESTCOMMAND}
 
   if uses "${INPUT_TESTCOMMAND}"; then
-    eval ${INPUT_TESTCOMMAND}
+    TESTOUTPUT=`eval ${INPUT_TESTCOMMAND}`
+    echo $TESTOUTPUT
   fi
 }
 
