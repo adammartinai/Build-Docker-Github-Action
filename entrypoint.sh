@@ -21,7 +21,9 @@ function main() {
     useCustomDockerfile
   fi
 
-  if [ "$INPUT_SHOULDBUILD" == "true" ]; then
+  echo ${INPUT_SHOULDBUILD}
+
+  if [ "${INPUT_SHOULDBUILD}" == "true" ]; then
     build
   fi
 
