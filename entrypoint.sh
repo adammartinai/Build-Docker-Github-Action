@@ -17,6 +17,8 @@ function main() {
   BUILDPARAMS=""
   CONTEXT="."
 
+  echo $INPUT_DOCKERFILE
+
   if uses "${INPUT_DOCKERFILE}"; then
     useCustomDockerfile
     build
